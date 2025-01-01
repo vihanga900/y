@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 01, 2025 at 11:40 AM
+-- Generation Time: Jan 01, 2025 at 12:40 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,23 @@ SET time_zone = "+00:00";
 --
 -- Database: `comrepublic4`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `addresses`
+--
+
+CREATE TABLE `addresses` (
+  `id` binary(16) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `street` varchar(255) NOT NULL,
+  `zip_code` varchar(255) NOT NULL,
+  `user_id` binary(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -64,6 +81,14 @@ CREATE TABLE `auth_user_details` (
   `verification_code` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `auth_user_details`
+--
+
+INSERT INTO `auth_user_details` (`id`, `created_on`, `email`, `enabled`, `first_name`, `last_name`, `password`, `phone_number`, `provider`, `updated_on`, `verification_code`) VALUES
+(0x2e0536f4bcbb4be8ad121d364cd60f8f, NULL, 'vihangan20@gmail.com', b'1', '', '', '{bcrypt}$2a$10$GV3JsthU2eVpvzMAGKC0S.zdaSCecFVRK073AuIyWeWKl1T2uOvkO', NULL, 'manual', NULL, '987098'),
+(0xda095accc3d74bfda6c7f6636bf62315, NULL, 'vihanga82bz@gmail.com', b'1', '', '', '{bcrypt}$2a$10$J3TwuWKO2pucCv//3Ho5gO7MFrJ1jyGJBltQ88IusHK5MAmYSzMMC', NULL, 'manual', NULL, '790632');
+
 -- --------------------------------------------------------
 
 --
@@ -82,9 +107,9 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `code`, `description`, `name`) VALUES
-(0xaadb7d0a54ac4b2997f762b9c178add1, 'Laptop', 'Portable and high-performance laptops for every need.', 'Laptop'),
+(0xaadb7d0a54ac4b2997f762b9c178add1, 'LAPTOP', 'Portable and high-performance laptops for every need.', 'Laptop'),
 (0xcf5d218527164ec68268cab1a63fa287, 'ACCESSORIES', 'Essential computer accessories to enhance your setup.', 'Accessories'),
-(0xedb0c4b46e85404ea8d072857b1c4395, 'Desktop', 'Wide range of desktop computers from top brands.', 'Desktop');
+(0xedb0c4b46e85404ea8d072857b1c4395, 'DESKTOP', 'Wide range of desktop computers from top brands.', 'Desktop');
 
 -- --------------------------------------------------------
 
@@ -130,6 +155,55 @@ INSERT INTO `category_type` (`id`, `code`, `description`, `name`, `category_id`)
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` binary(16) NOT NULL,
+  `discount` double DEFAULT NULL,
+  `expected_delivery_date` datetime(6) DEFAULT NULL,
+  `order_date` datetime(6) DEFAULT NULL,
+  `order_status` enum('CANCELLED','DELIVERED','PENDING','SHIPPED') NOT NULL,
+  `payment_method` varchar(255) NOT NULL,
+  `shipment_tracking_number` varchar(255) DEFAULT NULL,
+  `total_amount` double NOT NULL,
+  `address_id` binary(16) NOT NULL,
+  `user_id` binary(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` binary(16) NOT NULL,
+  `item_price` double DEFAULT NULL,
+  `product_variant_id` binary(16) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
+  `order_id` binary(16) NOT NULL,
+  `product_id` binary(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment`
+--
+
+CREATE TABLE `payment` (
+  `id` binary(16) NOT NULL,
+  `amount` double NOT NULL,
+  `payment_date` datetime(6) NOT NULL,
+  `payment_method` varchar(255) NOT NULL,
+  `payment_status` enum('COMPLETED','FAILED','PENDING') NOT NULL,
+  `order_id` binary(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -159,7 +233,6 @@ INSERT INTO `products` (`id`, `brand`, `created_at`, `description`, `name`, `new
 (0x5bafdfc4a12f4c08b58202280abc8b06, 'Apple', '2024-12-26 10:27:36.000000', 'A super-thin and powerful laptop with the Apple M2 chip and a 13.6-inch Retina display.', 'Apple MacBook Air M2', b'1', 1299.99, 4.9, 'apple-macbook-air-m2', '2024-12-26 10:27:36.000000', 0xaadb7d0a54ac4b2997f762b9c178add1, 0x3b4f251804ce41289a242a07e43ec6d7),
 (0x6604257da0ef4ff4a21dcfe634fdf394, 'MSI', '2024-12-26 10:31:55.000000', 'A powerful gaming desktop with advanced cooling and customizable RGB lighting.', 'MSI Infinite X Plus', b'1', 1499.99, 4.9, 'msi-infinite-x-plus', '2024-12-26 10:31:55.000000', 0xedb0c4b46e85404ea8d072857b1c4395, 0x74ca93471c524d45b4222f0fe89df45a),
 (0x7c71832cf880488fa25281d9d72275d9, 'Lenovo', '2024-12-26 10:32:42.000000', 'A high-end gaming desktop with Intel Core processors and NVIDIA RTX graphics.', 'Lenovo Legion Tower 7i', b'1', 1399.99, 4.7, 'lenovo-legion-tower-7i', '2024-12-26 10:32:42.000000', 0xedb0c4b46e85404ea8d072857b1c4395, 0xe2f519c7800646a398d21d34ab0b01f0),
-(0xa3ccfa66a4fb47f7a3d8ef887125a431, 'string', '2024-12-26 21:25:24.000000', 'string', 'string', b'1', 0.00, 0, 'string', '2024-12-26 21:25:24.000000', NULL, NULL),
 (0xc644a6956ee949d2be376e4063127b34, 'MSI', '2024-12-26 10:24:59.000000', 'A powerful gaming laptop with a 15.6-inch QHD display and advanced cooling.', 'MSI Stealth 15', b'1', 1499.99, 4.8, 'msi-stealth-15', '2024-12-26 10:24:59.000000', 0xaadb7d0a54ac4b2997f762b9c178add1, 0x8a10ba6b925b424fa855ebedf3035c94),
 (0xda3216cb46074db5ae44ffcc741e8749, 'Lenovo', '2024-12-26 10:25:51.000000', 'A premium business laptop with a 14-inch 2K display and exceptional durability.', 'Lenovo ThinkPad X1 Carbon', b'1', 1199.99, 4.7, 'lenovo-thinkpad-x1-carbon', '2024-12-26 10:25:51.000000', 0xaadb7d0a54ac4b2997f762b9c178add1, 0x1c08c48da4fc41b0951c34f6be7edc8c);
 
@@ -188,10 +261,9 @@ INSERT INTO `product_resources` (`id`, `is_primary`, `name`, `type`, `url`, `pro
 (0x3f1d8232846d4355a7d7df59f093a578, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/msi_stealth_15.pdf', 0xc644a6956ee949d2be376e4063127b34),
 (0x41560dedffc74302862437111349ed8b, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/apple_macbook_air_m2.pdf', 0x5bafdfc4a12f4c08b58202280abc8b06),
 (0x90ed2bfd402840c08ecdd7c439c3ecc7, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/asus_zenbook_14.pdf', 0x2236ae0cd1f04b7aa3d1835f73c938b8),
-(0xa6b71133e5164903bb12a4d4704051cd, b'1', 'User Manual', 'PDF', 'https://res.cloudinary.com/dx9xebywj/image/upload/v1734268368/sweatshirt-black_1_zxo3ta.jpg', 0x56c2d670e9c74eb59604a7e30aa7fee9),
-(0xf16f12ae74594797ad8cad0d47da6295, b'1', 'User Manual', 'PDF', 'https://res.cloudinary.com/dx9xebywj/image/upload/v1734356705/HP-Pavilion-x360-2-in-1-ek1115TU-_-i7_ogs9gg.jpg', 0xda3216cb46074db5ae44ffcc741e8749),
-(0xf290ac5b039b4fd6af9e0d713fde0c63, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/apple_mac_studio.pdf', 0x590d0a6febdf4ef8aee2cac270041f5b),
-(0xfea35695b8f84dcfae6eb0eb20814766, b'1', 'string', 'string', 'string', 0xa3ccfa66a4fb47f7a3d8ef887125a431);
+(0xa6b71133e5164903bb12a4d4704051cd, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/asus_rog_strix_g10.pdf', 0x56c2d670e9c74eb59604a7e30aa7fee9),
+(0xf16f12ae74594797ad8cad0d47da6295, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/lenovo_thinkpad_x1.pdf', 0xda3216cb46074db5ae44ffcc741e8749),
+(0xf290ac5b039b4fd6af9e0d713fde0c63, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/apple_mac_studio.pdf', 0x590d0a6febdf4ef8aee2cac270041f5b);
 
 -- --------------------------------------------------------
 
@@ -219,13 +291,19 @@ INSERT INTO `product_variant` (`id`, `color`, `size`, `stock_quantity`, `product
 (0x5b795d119a594f54ba8669bb49b5e8d1, 'Black', '14-inch', 40, 0xda3216cb46074db5ae44ffcc741e8749),
 (0x7ea3d4ec0af84bb4bc4737bb697a9d79, 'Black', 'Mid-Tower', 40, 0x7c71832cf880488fa25281d9d72275d9),
 (0xa5ed075a8dcc4f64bfb36d434a2ed97e, 'Black', 'ATX Tower', 25, 0x56c2d670e9c74eb59604a7e30aa7fee9),
-(0xdad72932fbf4473381e2c27ecbfa7d38, 'string', 'string', 0, 0xa3ccfa66a4fb47f7a3d8ef887125a431),
 (0xe0073afe3c024f7ba59952ed2a4efbb7, 'Black', 'Mid-Tower', 35, 0x6604257da0ef4ff4a21dcfe634fdf394),
 (0xefc44ddef4784d729f40c20859510278, 'Silver', 'Compact Desktop', 25, 0x590d0a6febdf4ef8aee2cac270041f5b);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FKbrvi7t6vo4g7pp8bij4dhlejv` (`user_id`);
 
 --
 -- Indexes for table `auth_authority`
@@ -261,6 +339,29 @@ ALTER TABLE `category_type`
   ADD KEY `FKmgwrsyriidy42m9273cybb8tr` (`category_id`);
 
 --
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FKhlglkvf5i60dv6dn397ethgpt` (`address_id`),
+  ADD KEY `FK2r5d9dwditf15m06s7x6yusmf` (`user_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FKbioxgbv59vetrxe0ejfubep1w` (`order_id`),
+  ADD KEY `FKocimc7dtr037rh4ls4l95nlfi` (`product_id`);
+
+--
+-- Indexes for table `payment`
+--
+ALTER TABLE `payment`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UKmf7n8wo2rwrxsd6f3t9ub2mep` (`order_id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -288,6 +389,12 @@ ALTER TABLE `product_variant`
 --
 
 --
+-- Constraints for table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD CONSTRAINT `FKbrvi7t6vo4g7pp8bij4dhlejv` FOREIGN KEY (`user_id`) REFERENCES `auth_user_details` (`id`);
+
+--
 -- Constraints for table `auth_user_authority`
 --
 ALTER TABLE `auth_user_authority`
@@ -299,6 +406,26 @@ ALTER TABLE `auth_user_authority`
 --
 ALTER TABLE `category_type`
   ADD CONSTRAINT `FKmgwrsyriidy42m9273cybb8tr` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `FK2r5d9dwditf15m06s7x6yusmf` FOREIGN KEY (`user_id`) REFERENCES `auth_user_details` (`id`),
+  ADD CONSTRAINT `FKhlglkvf5i60dv6dn397ethgpt` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`);
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `FKbioxgbv59vetrxe0ejfubep1w` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `FKocimc7dtr037rh4ls4l95nlfi` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `payment`
+--
+ALTER TABLE `payment`
+  ADD CONSTRAINT `FKlouu98csyullos9k25tbpk4va` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
 
 --
 -- Constraints for table `products`
