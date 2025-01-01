@@ -1,0 +1,325 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jan 01, 2025 at 11:40 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `comrepublic4`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_authority`
+--
+
+CREATE TABLE `auth_authority` (
+  `id` binary(16) NOT NULL,
+  `role_code` varchar(255) NOT NULL,
+  `role_description` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_user_authority`
+--
+
+CREATE TABLE `auth_user_authority` (
+  `user_id` binary(16) NOT NULL,
+  `authorities_id` binary(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_user_details`
+--
+
+CREATE TABLE `auth_user_details` (
+  `id` binary(16) NOT NULL,
+  `created_on` datetime(6) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `enabled` bit(1) NOT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(255) DEFAULT NULL,
+  `provider` varchar(255) DEFAULT NULL,
+  `updated_on` datetime(6) DEFAULT NULL,
+  `verification_code` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` binary(16) NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `code`, `description`, `name`) VALUES
+(0xaadb7d0a54ac4b2997f762b9c178add1, 'Laptop', 'Portable and high-performance laptops for every need.', 'Laptop'),
+(0xcf5d218527164ec68268cab1a63fa287, 'ACCESSORIES', 'Essential computer accessories to enhance your setup.', 'Accessories'),
+(0xedb0c4b46e85404ea8d072857b1c4395, 'Desktop', 'Wide range of desktop computers from top brands.', 'Desktop');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category_type`
+--
+
+CREATE TABLE `category_type` (
+  `id` binary(16) NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `category_id` binary(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `category_type`
+--
+
+INSERT INTO `category_type` (`id`, `code`, `description`, `name`, `category_id`) VALUES
+(0x0e4a87791f8e419da51a240a05381ec2, 'KEYBOARD', 'Durable and stylish keyboards.', 'Keyboard', 0xcf5d218527164ec68268cab1a63fa287),
+(0x1743e7b5f7dc4a2f9e47d9189d4370a2, 'MONITOR', 'Crisp and clear computer monitors.', 'Monitor', 0xcf5d218527164ec68268cab1a63fa287),
+(0x1c08c48da4fc41b0951c34f6be7edc8c, 'LENOVO_LAP', 'Lenovo laptops.', 'Lenovo', 0xaadb7d0a54ac4b2997f762b9c178add1),
+(0x2be5334b89234acc845ababa469dabbb, 'RAM', 'High-performance memory modules for computers.', 'RAM', 0xcf5d218527164ec68268cab1a63fa287),
+(0x35b618b171924c10954ab259f3ec6b9f, 'DELL_LAP', 'Dell laptops.', 'Dell', 0xaadb7d0a54ac4b2997f762b9c178add1),
+(0x3b4f251804ce41289a242a07e43ec6d7, 'APPLE_MAC_LAP', 'Apple Mac laptops.', 'Apple Mac', 0xaadb7d0a54ac4b2997f762b9c178add1),
+(0x49cc3d90606d48518cd7934a1434f756, 'APPLE_MAC', 'Apple Mac desktop computers.', 'Apple Mac', 0xedb0c4b46e85404ea8d072857b1c4395),
+(0x5b3629f5cd1e4ba4b2da27166115bc46, 'SAMSUNG', 'Samsung desktop computers.', 'Samsung', 0xedb0c4b46e85404ea8d072857b1c4395),
+(0x70e5a19818d54f5092e0a7e42cb462ce, 'SAMSUNG_LAP', 'Samsung laptops.', 'Samsung', 0xaadb7d0a54ac4b2997f762b9c178add1),
+(0x74ca93471c524d45b4222f0fe89df45a, 'MSI', 'MSI desktop computers.', 'MSI', 0xedb0c4b46e85404ea8d072857b1c4395),
+(0x77a5011e236a4cb796a50c4fb06c7ab3, 'MOUSE', 'High-quality computer mice.', 'Mouse', 0xcf5d218527164ec68268cab1a63fa287),
+(0x8a10ba6b925b424fa855ebedf3035c94, 'MSI_LAP', 'MSI laptops.', 'MSI', 0xaadb7d0a54ac4b2997f762b9c178add1),
+(0x8e09244d43a9485a9a1917e137f3fc1a, 'HEADPHONES', 'High-quality headphones for immersive audio.', 'Headphones', 0xcf5d218527164ec68268cab1a63fa287),
+(0xa1dfa22bb52b43a1a97109aa4ef822a7, 'ASUS_LAP', 'Asus laptops.', 'Asus', 0xaadb7d0a54ac4b2997f762b9c178add1),
+(0xb4c459891de64b818807efc47602ff74, 'HP', 'HP desktop computers.', 'HP', 0xedb0c4b46e85404ea8d072857b1c4395),
+(0xb7590042043f4f28b960043269f23ccb, 'HP_LAP', 'HP laptops.', 'HP', 0xaadb7d0a54ac4b2997f762b9c178add1),
+(0xb8ab04b38c7b4b9ca412aa5832af60ec, 'DELL', 'Dell desktop computers.', 'Dell', 0xedb0c4b46e85404ea8d072857b1c4395),
+(0xc53d70b4c4e444308978a8982fa682d9, 'EXTERNAL_HARD_DRIVE', 'Portable storage solutions for your data.', 'External Hard Drive', 0xcf5d218527164ec68268cab1a63fa287),
+(0xe2f519c7800646a398d21d34ab0b01f0, 'LENOVO', 'Lenovo desktop computers.', 'Lenovo', 0xedb0c4b46e85404ea8d072857b1c4395),
+(0xef3d343cc6ee4c43a0004a4cdc9932f2, 'POWER_SUPPLY', 'Reliable power supplies for computers.', 'Power Supply', 0xcf5d218527164ec68268cab1a63fa287),
+(0xf39e56fa4ff1494d8442a1752db9a99b, 'ASUS', 'Asus desktop computers.', 'Asus', 0xedb0c4b46e85404ea8d072857b1c4395);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` binary(16) NOT NULL,
+  `brand` varchar(255) DEFAULT NULL,
+  `created_at` datetime(6) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `new_arrival` bit(1) DEFAULT NULL,
+  `price` decimal(38,2) DEFAULT NULL,
+  `rating` float DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `category_id` binary(16) DEFAULT NULL,
+  `category_type_id` binary(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `brand`, `created_at`, `description`, `name`, `new_arrival`, `price`, `rating`, `slug`, `updated_at`, `category_id`, `category_type_id`) VALUES
+(0x2236ae0cd1f04b7aa3d1835f73c938b8, 'Asus', '2024-12-26 10:22:30.000000', 'A sleek and lightweight laptop with a 14-inch display and powerful performance.', 'Asus ZenBook 14', b'1', 899.99, 4.6, 'asus-zenbook-14', '2024-12-26 10:22:30.000000', 0xaadb7d0a54ac4b2997f762b9c178add1, 0xa1dfa22bb52b43a1a97109aa4ef822a7),
+(0x56c2d670e9c74eb59604a7e30aa7fee9, 'Asus', '2024-12-26 10:30:44.000000', 'A high-performance gaming desktop designed with the latest hardware and RGB lighting.', 'Asus ROG Strix G10', b'1', 1199.99, 4.8, 'asus-rog-strix-g10', '2024-12-26 10:30:44.000000', 0xedb0c4b46e85404ea8d072857b1c4395, 0xf39e56fa4ff1494d8442a1752db9a99b),
+(0x590d0a6febdf4ef8aee2cac270041f5b, 'Apple', '2024-12-26 10:33:45.000000', 'A compact desktop with the M2 Ultra chip, designed for professionals with demanding workflows.', 'Apple Mac Studio', b'1', 1999.99, 4.9, 'apple-mac-studio', '2024-12-26 10:33:45.000000', 0xedb0c4b46e85404ea8d072857b1c4395, 0x49cc3d90606d48518cd7934a1434f756),
+(0x5bafdfc4a12f4c08b58202280abc8b06, 'Apple', '2024-12-26 10:27:36.000000', 'A super-thin and powerful laptop with the Apple M2 chip and a 13.6-inch Retina display.', 'Apple MacBook Air M2', b'1', 1299.99, 4.9, 'apple-macbook-air-m2', '2024-12-26 10:27:36.000000', 0xaadb7d0a54ac4b2997f762b9c178add1, 0x3b4f251804ce41289a242a07e43ec6d7),
+(0x6604257da0ef4ff4a21dcfe634fdf394, 'MSI', '2024-12-26 10:31:55.000000', 'A powerful gaming desktop with advanced cooling and customizable RGB lighting.', 'MSI Infinite X Plus', b'1', 1499.99, 4.9, 'msi-infinite-x-plus', '2024-12-26 10:31:55.000000', 0xedb0c4b46e85404ea8d072857b1c4395, 0x74ca93471c524d45b4222f0fe89df45a),
+(0x7c71832cf880488fa25281d9d72275d9, 'Lenovo', '2024-12-26 10:32:42.000000', 'A high-end gaming desktop with Intel Core processors and NVIDIA RTX graphics.', 'Lenovo Legion Tower 7i', b'1', 1399.99, 4.7, 'lenovo-legion-tower-7i', '2024-12-26 10:32:42.000000', 0xedb0c4b46e85404ea8d072857b1c4395, 0xe2f519c7800646a398d21d34ab0b01f0),
+(0xa3ccfa66a4fb47f7a3d8ef887125a431, 'string', '2024-12-26 21:25:24.000000', 'string', 'string', b'1', 0.00, 0, 'string', '2024-12-26 21:25:24.000000', NULL, NULL),
+(0xc644a6956ee949d2be376e4063127b34, 'MSI', '2024-12-26 10:24:59.000000', 'A powerful gaming laptop with a 15.6-inch QHD display and advanced cooling.', 'MSI Stealth 15', b'1', 1499.99, 4.8, 'msi-stealth-15', '2024-12-26 10:24:59.000000', 0xaadb7d0a54ac4b2997f762b9c178add1, 0x8a10ba6b925b424fa855ebedf3035c94),
+(0xda3216cb46074db5ae44ffcc741e8749, 'Lenovo', '2024-12-26 10:25:51.000000', 'A premium business laptop with a 14-inch 2K display and exceptional durability.', 'Lenovo ThinkPad X1 Carbon', b'1', 1199.99, 4.7, 'lenovo-thinkpad-x1-carbon', '2024-12-26 10:25:51.000000', 0xaadb7d0a54ac4b2997f762b9c178add1, 0x1c08c48da4fc41b0951c34f6be7edc8c);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_resources`
+--
+
+CREATE TABLE `product_resources` (
+  `id` binary(16) NOT NULL,
+  `is_primary` bit(1) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `product_id` binary(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_resources`
+--
+
+INSERT INTO `product_resources` (`id`, `is_primary`, `name`, `type`, `url`, `product_id`) VALUES
+(0x1e34d79e385a4d9dbb0e97d1f9f75e85, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/msi_infinite_x_plus.pdf', 0x6604257da0ef4ff4a21dcfe634fdf394),
+(0x3321b27f81ed4847bd92bbf24143a248, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/lenovo_legion_tower_7i.pdf', 0x7c71832cf880488fa25281d9d72275d9),
+(0x3f1d8232846d4355a7d7df59f093a578, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/msi_stealth_15.pdf', 0xc644a6956ee949d2be376e4063127b34),
+(0x41560dedffc74302862437111349ed8b, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/apple_macbook_air_m2.pdf', 0x5bafdfc4a12f4c08b58202280abc8b06),
+(0x90ed2bfd402840c08ecdd7c439c3ecc7, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/asus_zenbook_14.pdf', 0x2236ae0cd1f04b7aa3d1835f73c938b8),
+(0xa6b71133e5164903bb12a4d4704051cd, b'1', 'User Manual', 'PDF', 'https://res.cloudinary.com/dx9xebywj/image/upload/v1734268368/sweatshirt-black_1_zxo3ta.jpg', 0x56c2d670e9c74eb59604a7e30aa7fee9),
+(0xf16f12ae74594797ad8cad0d47da6295, b'1', 'User Manual', 'PDF', 'https://res.cloudinary.com/dx9xebywj/image/upload/v1734356705/HP-Pavilion-x360-2-in-1-ek1115TU-_-i7_ogs9gg.jpg', 0xda3216cb46074db5ae44ffcc741e8749),
+(0xf290ac5b039b4fd6af9e0d713fde0c63, b'1', 'User Manual', 'PDF', 'https://example.com/manuals/apple_mac_studio.pdf', 0x590d0a6febdf4ef8aee2cac270041f5b),
+(0xfea35695b8f84dcfae6eb0eb20814766, b'1', 'string', 'string', 'string', 0xa3ccfa66a4fb47f7a3d8ef887125a431);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_variant`
+--
+
+CREATE TABLE `product_variant` (
+  `id` binary(16) NOT NULL,
+  `color` varchar(255) DEFAULT NULL,
+  `size` varchar(255) DEFAULT NULL,
+  `stock_quantity` int(11) DEFAULT NULL,
+  `product_id` binary(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_variant`
+--
+
+INSERT INTO `product_variant` (`id`, `color`, `size`, `stock_quantity`, `product_id`) VALUES
+(0x099f1f617fd54256930a7e7714810b0e, 'Black', '15.6-inch', 30, 0xc644a6956ee949d2be376e4063127b34),
+(0x1e1d910558304adf87865429d23860b4, 'Space Gray', '13.6-inch', 60, 0x5bafdfc4a12f4c08b58202280abc8b06),
+(0x29b8adcb2760402fae5831683368c95b, 'Black', '15.6-inch', 20, 0x2236ae0cd1f04b7aa3d1835f73c938b8),
+(0x3e4c82edb3514ee19854e8c53b21af10, 'Blue', '14-inch', 20, 0x2236ae0cd1f04b7aa3d1835f73c938b8),
+(0x5b795d119a594f54ba8669bb49b5e8d1, 'Black', '14-inch', 40, 0xda3216cb46074db5ae44ffcc741e8749),
+(0x7ea3d4ec0af84bb4bc4737bb697a9d79, 'Black', 'Mid-Tower', 40, 0x7c71832cf880488fa25281d9d72275d9),
+(0xa5ed075a8dcc4f64bfb36d434a2ed97e, 'Black', 'ATX Tower', 25, 0x56c2d670e9c74eb59604a7e30aa7fee9),
+(0xdad72932fbf4473381e2c27ecbfa7d38, 'string', 'string', 0, 0xa3ccfa66a4fb47f7a3d8ef887125a431),
+(0xe0073afe3c024f7ba59952ed2a4efbb7, 'Black', 'Mid-Tower', 35, 0x6604257da0ef4ff4a21dcfe634fdf394),
+(0xefc44ddef4784d729f40c20859510278, 'Silver', 'Compact Desktop', 25, 0x590d0a6febdf4ef8aee2cac270041f5b);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `auth_authority`
+--
+ALTER TABLE `auth_authority`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `auth_user_authority`
+--
+ALTER TABLE `auth_user_authority`
+  ADD KEY `FKn7t2r8oft6j1w61po11wnb19w` (`authorities_id`),
+  ADD KEY `FKo4vmid5kx45903pdsst9qu1p0` (`user_id`);
+
+--
+-- Indexes for table `auth_user_details`
+--
+ALTER TABLE `auth_user_details`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UKi096w0jnvgjp70hpgqx5v1tbi` (`email`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `category_type`
+--
+ALTER TABLE `category_type`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FKmgwrsyriidy42m9273cybb8tr` (`category_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UKostq1ec3toafnjok09y9l7dox` (`slug`),
+  ADD KEY `FKog2rp4qthbtt2lfyhfo32lsw9` (`category_id`),
+  ADD KEY `FK2pw105qhy1aca2a6bqc19rbxn` (`category_type_id`);
+
+--
+-- Indexes for table `product_resources`
+--
+ALTER TABLE `product_resources`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK3k1pn3x472fqhckh85qc6m6y7` (`product_id`);
+
+--
+-- Indexes for table `product_variant`
+--
+ALTER TABLE `product_variant`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FKtk6wrh1xwqq4vn2pf11mwycgv` (`product_id`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `auth_user_authority`
+--
+ALTER TABLE `auth_user_authority`
+  ADD CONSTRAINT `FKn7t2r8oft6j1w61po11wnb19w` FOREIGN KEY (`authorities_id`) REFERENCES `auth_authority` (`id`),
+  ADD CONSTRAINT `FKo4vmid5kx45903pdsst9qu1p0` FOREIGN KEY (`user_id`) REFERENCES `auth_user_details` (`id`);
+
+--
+-- Constraints for table `category_type`
+--
+ALTER TABLE `category_type`
+  ADD CONSTRAINT `FKmgwrsyriidy42m9273cybb8tr` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `FK2pw105qhy1aca2a6bqc19rbxn` FOREIGN KEY (`category_type_id`) REFERENCES `category_type` (`id`),
+  ADD CONSTRAINT `FKog2rp4qthbtt2lfyhfo32lsw9` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
+
+--
+-- Constraints for table `product_resources`
+--
+ALTER TABLE `product_resources`
+  ADD CONSTRAINT `FK3k1pn3x472fqhckh85qc6m6y7` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `product_variant`
+--
+ALTER TABLE `product_variant`
+  ADD CONSTRAINT `FKtk6wrh1xwqq4vn2pf11mwycgv` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
